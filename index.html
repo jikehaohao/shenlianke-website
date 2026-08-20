@@ -12,28 +12,42 @@
             box-sizing: border-box;
         }
         
+        html {
+            scroll-behavior: smooth;
+        }
+        
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
             line-height: 1.6;
             color: #333;
             background-color: #f8f9fa;
+            overflow-x: hidden;
         }
         
+        /* ===== 导航栏（滚动毛玻璃） ===== */
         .navbar {
-            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+            background: linear-gradient(135deg, rgba(26,115,232,0.95) 0%, rgba(13,71,161,0.95) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             padding: 1rem 2rem;
             position: fixed;
             width: 100%;
             top: 0;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             z-index: 1000;
+            transition: padding 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .navbar.scrolled {
+            padding: 0.6rem 2rem;
+            box-shadow: 0 4px 25px rgba(26,115,232,0.35);
         }
         
         .nav-content {
             max-width: 1200px;
             margin: 0 auto;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
         }
         
@@ -41,6 +55,16 @@
             color: white;
             font-size: 1.5rem;
             font-weight: bold;
+            background: linear-gradient(90deg, #fff, #8ec5ff, #fff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: logoShine 3s linear infinite;
+        }
+        
+        @keyframes logoShine {
+            to { background-position: 200% center; }
         }
         
         .nav-links {
@@ -51,37 +75,112 @@
         .nav-links a {
             color: white;
             text-decoration: none;
-            transition: opacity 0.3s;
+            position: relative;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -4px;
+            width: 0;
+            height: 2px;
+            background: #7fd4ff;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
         }
         
         .nav-links a:hover {
-            opacity: 0.8;
+            color: #7fd4ff;
         }
         
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* ===== Hero（粒子 + 动态渐变） ===== */
         .hero {
-            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+            position: relative;
+            background: linear-gradient(-45deg, #0d47a1, #1a73e8, #00b4d8, #0d47a1);
+            background-size: 400% 400%;
+            animation: gradientFlow 12s ease infinite;
             color: white;
             text-align: center;
-            padding: 8rem 2rem 4rem;
-            margin-top: 60px;
+            padding: 6rem 2rem 4rem;
+            margin-top: 0;
+            overflow: hidden;
+        }
+        
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        #particles {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
         }
         
         .hero h1 {
             font-size: 2.5rem;
             margin-bottom: 1rem;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.4);
+            animation: fadeUp 1s ease both;
         }
         
         .hero p {
             font-size: 1.2rem;
-            opacity: 0.9;
+            opacity: 0.95;
             max-width: 800px;
             margin: 0 auto;
+            min-height: 2em;
         }
         
+        .typed-text {
+            color: #9be7ff;
+        }
+        
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.1em;
+            background: #9be7ff;
+            margin-left: 2px;
+            vertical-align: text-bottom;
+            animation: blink 0.8s step-end infinite;
+        }
+        
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* ===== 内容区块 ===== */
         .main-content {
             max-width: 1200px;
             margin: 0 auto;
             padding: 4rem 2rem;
+            position: relative;
         }
         
         .section {
@@ -90,6 +189,38 @@
             padding: 2.5rem;
             margin-bottom: 2rem;
             box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #1a73e8, #00b4d8, #7fd4ff, #1a73e8);
+            background-size: 300% auto;
+            animation: borderFlow 4s linear infinite;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        
+        .section:hover::before {
+            opacity: 1;
+        }
+        
+        @keyframes borderFlow {
+            to { background-position: 300% center; }
+        }
+        
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         .section-title {
@@ -99,6 +230,22 @@
             padding-bottom: 0.5rem;
             border-bottom: 2px solid #1a73e8;
             display: inline-block;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 40%;
+            height: 2px;
+            background: linear-gradient(90deg, #00b4d8, #7fd4ff);
+            animation: titleSlide 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes titleSlide {
+            to { width: 100%; }
         }
         
         .company-info {
@@ -112,6 +259,13 @@
             background: #f8f9fa;
             border-radius: 8px;
             border-left: 4px solid #1a73e8;
+            transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+        }
+        
+        .info-item:hover {
+            transform: translateX(6px);
+            background: #f0f7ff;
+            box-shadow: 0 4px 15px rgba(26,115,232,0.15);
         }
         
         .info-label {
@@ -138,6 +292,29 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .scope-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(127,212,255,0.25), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .scope-item:hover::after {
+            left: 100%;
+        }
+        
+        .scope-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(26,115,232,0.15);
         }
         
         .scope-icon {
@@ -156,18 +333,58 @@
             padding: 2rem;
             border: 1px solid #e0e0e0;
             border-radius: 10px;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: white;
+        }
+        
+        /* 卡片悬停发光边框 */
+        .service-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 10px;
+            padding: 1px;
+            background: linear-gradient(135deg, #1a73e8, #00b4d8, #7fd4ff);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        
+        .service-card:hover::before {
+            opacity: 1;
+            animation: rotateBorder 2s linear infinite;
+        }
+        
+        @keyframes rotateBorder {
+            0%, 100% { background: linear-gradient(135deg, #1a73e8, #00b4d8, #7fd4ff); }
+            50% { background: linear-gradient(225deg, #7fd4ff, #00b4d8, #1a73e8); }
         }
         
         .service-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transform: translateY(-8px);
+            box-shadow: 0 10px 35px rgba(26,115,232,0.25);
         }
         
         .service-icon {
             font-size: 3rem;
             margin-bottom: 1rem;
+            display: inline-block;
+            transition: transform 0.4s ease;
+        }
+        
+        .service-card:hover .service-icon {
+            transform: scale(1.2) rotate(8deg);
+            animation: float 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: scale(1.2) rotate(8deg) translateY(0); }
+            50% { transform: scale(1.2) rotate(8deg) translateY(-6px); }
         }
         
         .service-title {
@@ -195,6 +412,12 @@
             padding: 1rem;
             background: #f8f9fa;
             border-radius: 8px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .contact-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 20px rgba(26,115,232,0.15);
         }
         
         .contact-icon {
@@ -202,16 +425,290 @@
             color: #1a73e8;
         }
         
+        /* ===== 页脚（科技感） ===== */
         .footer {
-            background: #1a237e;
+            background: #0a1045;
+            background-image:
+                radial-gradient(ellipse 60% 80% at 50% 120%, rgba(26,115,232,0.45), transparent),
+                linear-gradient(180deg, #0a1045 0%, #0d1554 100%);
             color: white;
             text-align: center;
-            padding: 2rem;
+            padding: 3rem 2rem 2rem;
             margin-top: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00b4d8, #7fd4ff, #00b4d8, transparent);
+            background-size: 200% auto;
+            animation: footerGlow 3s linear infinite;
+        }
+        
+        @keyframes footerGlow {
+            to { background-position: 200% center; }
+        }
+        
+        .footer canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        
+        .footer-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .footer-grid-bg {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(127,212,255,0.06) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(127,212,255,0.06) 1px, transparent 1px);
+            background-size: 42px 42px;
+            mask-image: radial-gradient(ellipse 70% 90% at 50% 100%, black 30%, transparent 75%);
+            -webkit-mask-image: radial-gradient(ellipse 70% 90% at 50% 100%, black 30%, transparent 75%);
+            animation: gridMove 14s linear infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes gridMove {
+            to { background-position: 42px 42px; }
+        }
+        
+        .footer-scan {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: linear-gradient(180deg, transparent, rgba(0,180,216,0.12), transparent);
+            animation: footerScan 5s ease-in-out infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes footerScan {
+            0%, 100% { top: -80px; }
+            50% { top: 100%; }
+        }
+        
+        .footer-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            background: linear-gradient(90deg, #fff, #7fd4ff, #fff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: logoShine 3s linear infinite;
         }
         
         .footer p {
-            opacity: 0.8;
+            opacity: 0.75;
+            margin-bottom: 0.3rem;
+        }
+        
+        .footer-tech {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-top: 1.2rem;
+            padding: 0.4rem 1.2rem;
+            border: 1px solid rgba(127,212,255,0.35);
+            border-radius: 999px;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            color: #9be7ff;
+            background: rgba(0,180,216,0.08);
+        }
+        
+        .footer-tech .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #00e5a0;
+            box-shadow: 0 0 8px #00e5a0;
+            animation: statusBlink 1.6s ease-in-out infinite;
+        }
+        
+        @keyframes statusBlink {
+            50% { opacity: 0.3; }
+        }
+        
+        /* ===== 左右侧科技感装饰 ===== */
+        .side-rail {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 2px;
+            height: 62vh;
+            background: linear-gradient(180deg, transparent, rgba(26,115,232,0.25) 20%, rgba(0,180,216,0.25) 80%, transparent);
+            z-index: 5;
+            pointer-events: none;
+        }
+        
+        .side-rail.left { left: 1.8rem; }
+        .side-rail.right { right: 1.8rem; }
+        
+        .rail-pulse {
+            position: absolute;
+            left: -3px;
+            width: 8px;
+            height: 70px;
+            border-radius: 8px;
+            background: linear-gradient(180deg, transparent, #00b4d8 30%, #7fd4ff 50%, #00b4d8 70%, transparent);
+            filter: blur(1px);
+            box-shadow: 0 0 12px rgba(0,180,216,0.8);
+            animation: railDown 3.2s linear infinite;
+        }
+        
+        .side-rail.right .rail-pulse {
+            animation: railUp 3.2s linear infinite;
+            animation-delay: 1.2s;
+        }
+        
+        @keyframes railDown {
+            0% { top: -70px; opacity: 0; }
+            12% { opacity: 1; }
+            88% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+        
+        @keyframes railUp {
+            0% { top: 100%; opacity: 0; }
+            12% { opacity: 1; }
+            88% { opacity: 1; }
+            100% { top: -70px; opacity: 0; }
+        }
+        
+        .rail-node {
+            position: absolute;
+            left: 50%;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #7fd4ff;
+            box-shadow: 0 0 8px rgba(127,212,255,0.9);
+            transform: translate(-50%, -50%) scale(0);
+            animation: nodeBlink 4s ease-in-out infinite;
+        }
+        
+        @keyframes nodeBlink {
+            0%, 100% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+        
+        .rail-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            background: linear-gradient(180deg, #1a73e8, #00b4d8);
+            box-shadow: 0 0 10px rgba(26,115,232,0.6);
+        }
+        
+        .bg-orb {
+            position: fixed;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.16;
+            z-index: 0;
+            pointer-events: none;
+            animation: orbFloat 12s ease-in-out infinite alternate;
+        }
+        
+        .bg-orb.orb-left {
+            left: -140px;
+            top: 32%;
+            background: #1a73e8;
+        }
+        
+        .bg-orb.orb-right {
+            right: -140px;
+            top: 58%;
+            background: #00b4d8;
+            animation-name: orbFloatR;
+            animation-delay: 4s;
+        }
+        
+        @keyframes orbFloat {
+            from { transform: translate(0, 0) scale(1); }
+            to { transform: translate(30px, -40px) scale(1.15); }
+        }
+        
+        @keyframes orbFloatR {
+            from { transform: translate(0, 0) scale(1); }
+            to { transform: translate(-30px, 40px) scale(1.15); }
+        }
+        
+        /* HUD 四角括号 */
+        .corner {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            opacity: 0.35;
+            transition: all 0.4s ease;
+            pointer-events: none;
+        }
+        
+        .corner.tl { top: 10px; left: 10px; border-top: 2px solid #00b4d8; border-left: 2px solid #00b4d8; }
+        .corner.tr { top: 10px; right: 10px; border-top: 2px solid #00b4d8; border-right: 2px solid #00b4d8; }
+        .corner.bl { bottom: 10px; left: 10px; border-bottom: 2px solid #00b4d8; border-left: 2px solid #00b4d8; }
+        .corner.br { bottom: 10px; right: 10px; border-bottom: 2px solid #00b4d8; border-right: 2px solid #00b4d8; }
+        
+        .section:hover .corner {
+            opacity: 1;
+            width: 26px;
+            height: 26px;
+        }
+        
+        @media (max-width: 1280px) {
+            .side-rail, .bg-orb { display: none; }
+        }
+        
+        /* ===== 返回顶部 ===== */
+        #backTop {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #1a73e8, #00b4d8);
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 15px rgba(26,115,232,0.4);
+            z-index: 999;
+        }
+        
+        #backTop.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        #backTop:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(26,115,232,0.6);
         }
         
         @media (max-width: 768px) {
@@ -230,9 +727,8 @@
     </style>
 </head>
 <body>
-    <nav class="navbar">
+    <nav class="navbar" id="navbar">
         <div class="nav-content">
-            <div class="logo">深联科信息</div>
             <div class="nav-links">
                 <a href="#home">首页</a>
                 <a href="#about">关于我们</a>
@@ -243,8 +739,11 @@
     </nav>
     
     <section class="hero" id="home">
-        <h1>深圳市深联科信息技术有限责任公司</h1>
-        <p>专业的信息技术服务提供商，致力于为客户提供全方位的数字化解决方案</p>
+        <canvas id="particles"></canvas>
+        <div class="hero-content">
+            <h1>深圳市深联科信息技术有限责任公司</h1>
+            <p><span class="typed-text" id="typedText"></span><span class="cursor"></span></p>
+        </div>
     </section>
     
     <div class="main-content">
@@ -378,8 +877,275 @@
     </div>
     
     <footer class="footer">
-        <p>&copy; 2026 深圳市深联科信息技术有限责任公司 版权所有</p>
-        <p>统一社会信用代码：91440300MAKF8NJR5A</p>
+        <div class="footer-grid-bg"></div>
+        <div class="footer-scan"></div>
+        <canvas id="footerParticles"></canvas>
+        <div class="footer-content">
+            <div class="footer-title">深圳市深联科信息技术有限责任公司</div>
+            <p>&copy; 2026 深圳市深联科信息技术有限责任公司 版权所有</p>
+            <p>统一社会信用代码：91440300MAKF8NJR5A</p>
+            <div class="footer-tech">
+                <span class="dot"></span>
+                <span>SHENLIANKE · TECH</span>
+            </div>
+        </div>
     </footer>
+    
+    <!-- 左右侧科技感装饰 -->
+    <div class="side-rail left">
+        <span class="rail-fill" id="railFill"></span>
+        <span class="rail-pulse"></span>
+        <span class="rail-node" style="top:15%; animation-delay:0s"></span>
+        <span class="rail-node" style="top:40%; animation-delay:1.1s"></span>
+        <span class="rail-node" style="top:65%; animation-delay:2.2s"></span>
+        <span class="rail-node" style="top:88%; animation-delay:3s"></span>
+    </div>
+    <div class="side-rail right">
+        <span class="rail-pulse"></span>
+        <span class="rail-node" style="top:22%; animation-delay:0.6s"></span>
+        <span class="rail-node" style="top:48%; animation-delay:1.7s"></span>
+        <span class="rail-node" style="top:75%; animation-delay:2.6s"></span>
+    </div>
+    <div class="bg-orb orb-left"></div>
+    <div class="bg-orb orb-right"></div>
+    
+    <button id="backTop" title="返回顶部">↑</button>
+    
+    <script>
+        // ===== 1. Hero 粒子连线背景 =====
+        (function() {
+            const canvas = document.getElementById('particles');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            let mouseX = -1000, mouseY = -1000;
+            
+            function resize() {
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+            }
+            
+            function createParticles() {
+                particles = [];
+                const count = Math.min(80, Math.floor(canvas.width / 15));
+                for (let i = 0; i < count; i++) {
+                    particles.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        vx: (Math.random() - 0.5) * 0.6,
+                        vy: (Math.random() - 0.5) * 0.6,
+                        r: Math.random() * 2 + 1
+                    });
+                }
+            }
+            
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                for (const p of particles) {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    
+                    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                    
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+                    ctx.fill();
+                }
+                
+                // 粒子间连线
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 120) {
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = 'rgba(155,231,255,' + (1 - dist / 120) * 0.4 + ')';
+                            ctx.lineWidth = 1;
+                            ctx.stroke();
+                        }
+                    }
+                    // 鼠标连线
+                    const mdx = particles[i].x - mouseX;
+                    const mdy = particles[i].y - mouseY;
+                    const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
+                    if (mDist < 150) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(mouseX, mouseY);
+                        ctx.strokeStyle = 'rgba(255,255,255,' + (1 - mDist / 150) * 0.5 + ')';
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                    }
+                }
+                
+                requestAnimationFrame(draw);
+            }
+            
+            canvas.parentElement.addEventListener('mousemove', function(e) {
+                const rect = canvas.getBoundingClientRect();
+                mouseX = e.clientX - rect.left;
+                mouseY = e.clientY - rect.top;
+            });
+            
+            canvas.parentElement.addEventListener('mouseleave', function() {
+                mouseX = -1000;
+                mouseY = -1000;
+            });
+            
+            window.addEventListener('resize', function() {
+                resize();
+                createParticles();
+            });
+            
+            resize();
+            createParticles();
+            draw();
+        })();
+        
+        // ===== 2. 打字机效果 =====
+        (function() {
+            const phrases = [
+                '专业的信息技术服务提供商，致力于为客户提供全方位的数字化解决方案',
+                '云计算 · 大数据 · 人工智能 · 物联网',
+                '科技驱动创新 · 数据赋能业务'
+            ];
+            const el = document.getElementById('typedText');
+            let phraseIndex = 0, charIndex = 0, deleting = false;
+            
+            function type() {
+                const current = phrases[phraseIndex];
+                
+                if (!deleting) {
+                    el.textContent = current.substring(0, ++charIndex);
+                    if (charIndex === current.length) {
+                        deleting = true;
+                        setTimeout(type, 2500);
+                        return;
+                    }
+                } else {
+                    el.textContent = current.substring(0, --charIndex);
+                    if (charIndex === 0) {
+                        deleting = false;
+                        phraseIndex = (phraseIndex + 1) % phrases.length;
+                    }
+                }
+                setTimeout(type, deleting ? 35 : 90);
+            }
+            
+            type();
+        })();
+        
+        // ===== 3. 滚动渐入动画 =====
+        (function() {
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('.section').forEach(function(section) {
+                observer.observe(section);
+            });
+        })();
+        
+        // ===== 4. 导航栏滚动效果 + 返回顶部 =====
+        (function() {
+            const navbar = document.getElementById('navbar');
+            const backTop = document.getElementById('backTop');
+            
+            window.addEventListener('scroll', function() {
+                const scrolled = window.scrollY > 50;
+                navbar.classList.toggle('scrolled', scrolled);
+                backTop.classList.toggle('show', window.scrollY > 400);
+            });
+            
+            backTop.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        })();
+        
+        // ===== 5. 区块 HUD 四角括号 =====
+        (function() {
+            document.querySelectorAll('.section').forEach(function(section) {
+                ['tl', 'tr', 'bl', 'br'].forEach(function(pos) {
+                    var c = document.createElement('span');
+                    c.className = 'corner ' + pos;
+                    section.appendChild(c);
+                });
+            });
+        })();
+        
+        // ===== 6. 左侧光轨滚动进度 =====
+        (function() {
+            var fill = document.getElementById('railFill');
+            if (!fill) return;
+            window.addEventListener('scroll', function() {
+                var h = document.documentElement;
+                var pct = h.scrollTop / ((h.scrollHeight - h.clientHeight) || 1);
+                fill.style.height = (pct * 100) + '%';
+            }, { passive: true });
+        })();
+        
+        // ===== 7. 页脚上升粒子 =====
+        (function() {
+            var canvas = document.getElementById('footerParticles');
+            if (!canvas) return;
+            var ctx = canvas.getContext('2d');
+            var particles = [];
+            
+            function resize() {
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+            }
+            
+            function spawn() {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: canvas.height + 5,
+                    vy: -(Math.random() * 0.5 + 0.25),
+                    vx: (Math.random() - 0.5) * 0.25,
+                    r: Math.random() * 1.8 + 0.6,
+                    life: 1
+                });
+            }
+            
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                if (particles.length < 45 && Math.random() < 0.4) spawn();
+                
+                for (var i = particles.length - 1; i >= 0; i--) {
+                    var p = particles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.life -= 0.004;
+                    
+                    if (p.y < -5 || p.life <= 0) {
+                        particles.splice(i, 1);
+                        continue;
+                    }
+                    
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(127,212,255,' + (p.life * 0.7) + ')';
+                    ctx.fill();
+                }
+                
+                requestAnimationFrame(draw);
+            }
+            
+            window.addEventListener('resize', resize);
+            resize();
+            draw();
+        })();
+    </script>
 </body>
 </html>
