@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>深圳市深联科信息技术有限责任公司</title>
+    <meta name="description" content="深圳市深联科信息技术有限责任公司 - 专业的信息技术服务提供商">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+        
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+            color: white;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            margin-top: 60px;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
+        
+        .section-title {
+            color: #1a73e8;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #1a73e8;
+            display: inline-block;
+        }
+        
+        .company-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .info-item {
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #1a73e8;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #1a73e8;
+            margin-bottom: 0.3rem;
+        }
+        
+        .info-value {
+            color: #555;
+        }
+        
+        .business-scope {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .scope-item {
+            padding: 1rem;
+            background: #f0f7ff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .scope-icon {
+            color: #1a73e8;
+            font-size: 1.2rem;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+        
+        .service-card {
+            padding: 2rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .service-title {
+            font-size: 1.3rem;
+            color: #1a73e8;
+            margin-bottom: 0.5rem;
+        }
+        
+        .service-desc {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .contact-icon {
+            font-size: 1.5rem;
+            color: #1a73e8;
+        }
+        
+        .footer {
+            background: #1a237e;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .footer p {
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">深联科信息</div>
+            <div class="nav-links">
+                <a href="#home">首页</a>
+                <a href="#about">关于我们</a>
+                <a href="#services">服务范围</a>
+                <a href="#contact">联系我们</a>
+            </div>
+        </div>
+    </nav>
+    
+    <section class="hero" id="home">
+        <h1>深圳市深联科信息技术有限责任公司</h1>
+        <p>专业的信息技术服务提供商，致力于为客户提供全方位的数字化解决方案</p>
+    </section>
+    
+    <div class="main-content">
+        <section class="section" id="about">
+            <h2 class="section-title">关于我们</h2>
+            <div class="company-info">
+                <div class="info-item">
+                    <div class="info-label">公司名称</div>
+                    <div class="info-value">深圳市深联科信息技术有限责任公司</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">成立日期</div>
+                    <div class="info-value">2026年6月8日</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">法定代表人</div>
+                    <div class="info-value">安春兰</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">注册资本</div>
+                    <div class="info-value">30万元人民币</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">统一社会信用代码</div>
+                    <div class="info-value">91440300MAKF8NJR5A</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">联系电话</div>
+                    <div class="info-value">15010935294</div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2 class="section-title">经营范围</h2>
+            <p style="margin-bottom: 1rem; color: #666;">一般项目：</p>
+            <div class="business-scope">
+                <div class="scope-item">
+                    <span class="scope-icon">✓</span>
+                    <span>信息技术咨询服务</span>
+                </div>
+                <div class="scope-item">
+                    <span class="scope-icon">✓</span>
+                    <span>数据处理服务</span>
+                </div>
+                <div class="scope-item">
+                    <span class="scope-icon">✓</span>
+                    <span>云计算装备技术服务</span>
+                </div>
+                <div class="scope-item">
+                    <span class="scope-icon">✓</span>
+                    <span>物联网技术服务</span>
+                </div>
+                <div class="scope-item">
+                    <span class="scope-icon">✓</span>
+                    <span>人工智能公共服务平台技术咨询服务</span>
+                </div>
+                <div class="scope-item">
+                    <span class="scope-icon">✓</span>
+                    <span>软件外包服务</span>
+                </div>
+                <div class="scope-item">
+                    <span class="scope-icon">✓</span>
+                    <span>网络技术服务</span>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section" id="services">
+            <h2 class="section-title">服务范围</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">💡</div>
+                    <h3 class="service-title">信息技术咨询</h3>
+                    <p class="service-desc">提供专业的信息技术咨询服务，帮助企业解决技术难题，优化业务流程</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📊</div>
+                    <h3 class="service-title">数据处理服务</h3>
+                    <p class="service-desc">专业的数据处理和分析服务，助力企业数据驱动决策</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">☁️</div>
+                    <h3 class="service-title">云计算服务</h3>
+                    <p class="service-desc">提供云计算装备技术服务，支持企业数字化转型</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🌐</div>
+                    <h3 class="service-title">物联网服务</h3>
+                    <p class="service-desc">物联网技术服务，连接设备与数据，构建智能生态系统</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🤖</div>
+                    <h3 class="service-title">AI技术服务</h3>
+                    <p class="service-desc">人工智能公共服务平台技术咨询，推动AI应用落地</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">💻</div>
+                    <h3 class="service-title">软件开发</h3>
+                    <p class="service-desc">软件外包服务，提供高质量的软件开发和定制服务</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section" id="contact">
+            <h2 class="section-title">联系我们</h2>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <span class="contact-icon">📞</span>
+                    <div>
+                        <strong>联系电话</strong><br>
+                        15010935294
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">📅</span>
+                    <div>
+                        <strong>成立时间</strong><br>
+                        2026年6月8日
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">👤</span>
+                    <div>
+                        <strong>法定代表人</strong><br>
+                        安春兰
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <footer class="footer">
+        <p>&copy; 2026 深圳市深联科信息技术有限责任公司 版权所有</p>
+        <p>统一社会信用代码：91440300MAKF8NJR5A</p>
+    </footer>
+</body>
+</html>
