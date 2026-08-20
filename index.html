@@ -324,13 +324,25 @@
         
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
             margin-top: 1.5rem;
         }
         
+        @media (max-width: 1024px) {
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
         .service-card {
-            padding: 2rem;
+            padding: 1.5rem;
             border: 1px solid #e0e0e0;
             border-radius: 10px;
             transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
@@ -821,8 +833,8 @@
             <div class="services-grid">
                 <div class="service-card">
                     <div class="service-icon">🏗️</div>
-                    <h3 class="service-title">机房运维</h3>
-                    <p class="service-desc">数据中心基础设施管理，服务器上架、网络布线、环境监控，保障机房稳定运行</p>
+                    <h3 class="service-title">基础设施运维</h3>
+                    <p class="service-desc">机房、服务器、网络设备及数据库管理，MySQL/Redis优化，备份恢复，保障稳定运行</p>
                 </div>
                 <div class="service-card">
                     <div class="service-icon">📊</div>
@@ -848,6 +860,16 @@
                     <div class="service-icon">🔒</div>
                     <h3 class="service-title">安全运维</h3>
                     <p class="service-desc">网络安全加固，漏洞扫描修复，等保合规，应急响应</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">💻</div>
+                    <h3 class="service-title">软件开发服务</h3>
+                    <p class="service-desc">Python/Go运维平台开发、Web应用、API服务及企业效率工具定制</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">💡</div>
+                    <h3 class="service-title">技术方案咨询</h3>
+                    <p class="service-desc">网络架构规划、技术选型评估、系统上云与数字化转型方案设计</p>
                 </div>
             </div>
         </section>
